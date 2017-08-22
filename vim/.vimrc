@@ -2,6 +2,10 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 
+set nobackup
+set nowritebackup
+set noswapfile
+
 "Plugins=========================================================
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
@@ -51,6 +55,8 @@ nnoremap <C-Y> :w<CR>
 inoremap <C-Y> <ESC>:w<CR>i
 vnoremap <C-Y> <ESC>:w<CR>v
 
+map <F5> :Run<CR>
+
 "Tabs
 nnoremap <Leader>q :tabnew<CR>
 inoremap <Leader>q <ESC>:tabnew<CR>
@@ -73,8 +79,9 @@ map <C-L> <C-W>l
 inoremap ( ()<ESC>i
 inoremap [ []<ESC>i
 inoremap { {}<ESC>i
+inoremap " ""<ESC>i
 nnoremap <Space><Space> /<++><CR>"_c4l
 
 autocmd FileType html nnoremap ,html i<html><CR><TAB><head><CR><TAB><TAB><title><++></title><CR><TAB></head><CR><TAB><body><CR><TAB><TAB><++><CR><TAB></body><CR></html><ESC>gg
 autocmd FileType html inoremap ,p <p><p><CR><CR><++><ESC>2ki
-autocmd FileType cpp nnoremap <Leader>main i#include<iostream><CR>int main(){<CR><CR>return 0;<CR>}<ESC>2ki<TAB>
+autocmd FileType cpp nnoremap <Leader>main i#include<iostream><CR><CR>int main(){<CR><CR>return 0;<CR>}<ESC>2ki<TAB>
