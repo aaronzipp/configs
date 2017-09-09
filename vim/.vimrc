@@ -19,6 +19,7 @@ call vundle#end()
 autocmd filetype java command! Run execute 'w | !runj ' . @%
 "C++ Compiler
 autocmd filetype cpp command! Run execute 'w | !runcpp ' . @%
+autocmd filetype cpp map <F5> :Run<CR>
 
 "File Browser
 let g:netrw_banner=0
@@ -56,7 +57,6 @@ nnoremap <C-Y> :w<CR>
 inoremap <C-Y> <ESC>:w<CR>li
 vnoremap <C-Y> <ESC>:w<CR>v
 
-map <F5> :Run<CR>
 
 "Tabs
 nnoremap <Leader>q :tabnew<CR>
