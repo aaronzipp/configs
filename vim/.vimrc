@@ -12,6 +12,7 @@ Plugin 'gmarik/Vundle.vim'
 
 Plugin 'tpope/vim-fugitive'
 
+
 call vundle#end()
 "================================================================
 "================================================================
@@ -20,6 +21,9 @@ autocmd filetype java command! Run execute 'w | !runj ' . @%
 "C++ Compiler
 autocmd filetype cpp command! Run execute 'w | !runcpp ' . @%
 autocmd filetype cpp map <F5> :Run<CR>
+"Autocompile TeX
+""autocmd Filetype tex
+autocmd filetype tex autocmd InsertLeave * execute 'w | silent !pdflatex ' .@% | execute 'redraw!'
 
 "File Browser
 let g:netrw_banner=0
@@ -88,46 +92,46 @@ autocmd FileType html inoremap ,p <p><p><CR><CR><++><ESC>2ki
 autocmd FileType cpp nnoremap <Leader>main i#include<iostream><CR><CR>int main(){<CR><CR>return 0;<CR>}<ESC>2ki<TAB>
 
 "LaTeX"
-autocmd filetype tex command! comp execute 'w | !pdflatex ' . @%
-autocmd filetype tex inoremap <F5> <ESC>:comp<CR>  
+"autocmd filetype tex command! comp execute 'w | !pdflatex ' . @%
+"autocmd filetype tex inoremap <F5> <ESC>:comp<CR>  
 
-autocmd FileType tex inoremap ,fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
-autocmd FileType tex inoremap ,mat \begin{matrix}<Enter><Enter><Enter><++><Enter><Enter>\end{matrix}<Enter><Enter><++><Esc>6kf}i
-autocmd FileType tex inoremap ,fi \begin{fitch}<Enter><Enter>\end{fitch}<Enter><Enter><++><Esc>3kA
-autocmd FileType tex inoremap ,exe \begin{exe}<Enter>\ex<Space><Enter>\end{exe}<Enter><Enter><++><Esc>3kA
-autocmd FileType tex inoremap ,em \emph{}<++><Esc>T{i
-autocmd FileType tex inoremap ,bf \textbf{}<++><Esc>T{i
-autocmd FileType tex inoremap ,it \textit{}<++><Esc>T{i
-autocmd FileType tex inoremap ,ct \textcite{}<++><Esc>T{i
-autocmd FileType tex inoremap ,cp \parencite{}<++><Esc>T{i
-autocmd FileType tex inoremap ,glos {\gll<Space><++><Space>\\<Enter><++><Space>\\<Enter>\trans{``<++>''}}<Esc>2k2bcw
-autocmd FileType tex inoremap ,x \begin{xlist}<Enter>\ex<Space><Enter>\end{xlist}<Esc>kA<Space>
-autocmd FileType tex inoremap ,ol \begin{enumerate}<Enter><Enter>\end{enumerate}<Enter><Enter><++><Esc>3kA\item<Space>
-autocmd FileType tex inoremap ,ul \begin{itemize}<Enter><Enter>\end{itemize}<Enter><Enter><++><Esc>3kA\item<Space>
-autocmd FileType tex inoremap ,li <Enter>\item<Space>
-autocmd FileType tex inoremap ,ref \ref{}<Space><++><Esc>T{i
-autocmd FileType tex inoremap ,tab \begin{tabular}<Enter><++><Enter>\end{tabular}<Enter><Enter><++><Esc>4kA{}<Esc>i
-autocmd FileType tex inoremap ,ot \begin{tableau}<Enter>\inp{<++>}<Tab>\const{<++>}<Tab><++><Enter><++><Enter>\end{tableau}<Enter><Enter><++><Esc>5kA{}<Esc>i
-autocmd FileType tex inoremap ,can \cand{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap ,con \const{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap ,v \vio{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap ,a \href{}{<++>}<Space><++><Esc>2T{iautocmd FileType tex inoremap ;fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
-autocmd FileType tex inoremap ,fi \begin{fitch}<Enter><Enter>\end{fitch}<Enter><Enter><++><Esc>3kA
-autocmd FileType tex inoremap ,exe \begin{exe}<Enter>\ex<Space><Enter>\end{exe}<Enter><Enter><++><Esc>3kA
-autocmd FileType tex inoremap ,em \emph{}<++><Esc>T{i
-autocmd FileType tex inoremap ,bf \textbf{}<++><Esc>T{i
-autocmd FileType tex inoremap ,it \textit{}<++><Esc>T{i
-autocmd FileType tex inoremap ,ct \textcite{}<++><Esc>T{i
-autocmd FileType tex inoremap ,cp \parencite{}<++><Esc>T{i
-autocmd FileType tex inoremap ,glos {\gll<Space><++><Space>\\<Enter><++><Space>\\<Enter>\trans{``<++>''}}<Esc>2k2bcw
-autocmd FileType tex inoremap ,x \begin{xlist}<Enter>\ex<Space><Enter>\end{xlist}<Esc>kA<Space>
-autocmd FileType tex inoremap ,ol \begin{enumerate}<Enter><Enter>\end{enumerate}<Enter><Enter><++><Esc>3kA\item<Space>
-autocmd FileType tex inoremap ,ul \begin{itemize}<Enter><Enter>\end{itemize}<Enter><Enter><++><Esc>3kA\item<Space>
-autocmd FileType tex inoremap ,li <Enter>\item<Space>
-autocmd FileType tex inoremap ,ref \ref{}<Space><++><Esc>T{i
-autocmd FileType tex inoremap ,tab \begin{tabular}<Enter><++><Enter>\end{tabular}<Enter><Enter><++><Esc>4kA{}<Esc>i
-autocmd FileType tex inoremap ,ot \begin{tableau}<Enter>\inp{<++>}<Tab>\const{<++>}<Tab><++><Enter><++><Enter>\end{tableau}<Enter><Enter><++><Esc>5kA{}<Esc>i
-autocmd FileType tex inoremap ,can \cand{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap ,con \const{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap ,v \vio{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap ,a \href{}{<++>}<Space><++><Esc>2T{i
+autocmd FileType tex inoremap <Leader>fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
+autocmd FileType tex inoremap <Leader>mat \begin{matrix}<Enter><Enter><Enter><++><Enter><Enter>\end{matrix}<Enter><Enter><++><Esc>6kf}i
+autocmd FileType tex inoremap <Leader>fi \begin{fitch}<Enter><Enter>\end{fitch}<Enter><Enter><++><Esc>3kA
+autocmd FileType tex inoremap <Leader>exe \begin{exe}<Enter>\ex<Space><Enter>\end{exe}<Enter><Enter><++><Esc>3kA
+autocmd FileType tex inoremap <Leader>em \emph{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>bf \textbf{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>it \textit{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>ct \textcite{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>cp \parencite{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>glos {\gll<Space><++><Space>\\<Enter><++><Space>\\<Enter>\trans{``<++>''}}<Esc>2k2bcw
+autocmd FileType tex inoremap <Leader>x \begin{xlist}<Enter>\ex<Space><Enter>\end{xlist}<Esc>kA<Space>
+autocmd FileType tex inoremap <Leader>ol \begin{enumerate}<Enter><Enter>\end{enumerate}<Enter><Enter><++><Esc>3kA\item<Space>
+autocmd FileType tex inoremap <Leader>ul \begin{itemize}<Enter><Enter>\end{itemize}<Enter><Enter><++><Esc>3kA\item<Space>
+autocmd FileType tex inoremap <Leader>li <Enter>\item<Space>
+autocmd FileType tex inoremap <Leader>ref \ref{}<Space><++><Esc>T{i
+autocmd FileType tex inoremap <Leader>tab \begin{tabular}<Enter><++><Enter>\end{tabular}<Enter><Enter><++><Esc>4kA{}<Esc>i
+autocmd FileType tex inoremap <Leader>ot \begin{tableau}<Enter>\inp{<++>}<Tab>\const{<++>}<Tab><++><Enter><++><Enter>\end{tableau}<Enter><Enter><++><Esc>5kA{}<Esc>i
+autocmd FileType tex inoremap <Leader>can \cand{}<Tab><++><Esc>T{i
+autocmd FileType tex inoremap <Leader>con \const{}<Tab><++><Esc>T{i
+autocmd FileType tex inoremap <Leader>v \vio{}<Tab><++><Esc>T{i
+autocmd FileType tex inoremap <Leader>a \href{}{<++>}<Space><++><Esc>2T{iautocmd FileType tex inoremap ;fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
+autocmd FileType tex inoremap <Leader>fi \begin{fitch}<Enter><Enter>\end{fitch}<Enter><Enter><++><Esc>3kA
+autocmd FileType tex inoremap <Leader>exe \begin{exe}<Enter>\ex<Space><Enter>\end{exe}<Enter><Enter><++><Esc>3kA
+autocmd FileType tex inoremap <Leader>em \emph{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>bf \textbf{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>it \textit{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>ct \textcite{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>cp \parencite{}<++><Esc>T{i
+autocmd FileType tex inoremap <Leader>glos {\gll<Space><++><Space>\\<Enter><++><Space>\\<Enter>\trans{``<++>''}}<Esc>2k2bcw
+autocmd FileType tex inoremap <Leader>x \begin{xlist}<Enter>\ex<Space><Enter>\end{xlist}<Esc>kA<Space>
+autocmd FileType tex inoremap <Leader>ol \begin{enumerate}<Enter><Enter>\end{enumerate}<Enter><Enter><++><Esc>3kA\item<Space>
+autocmd FileType tex inoremap <Leader>ul \begin{itemize}<Enter><Enter>\end{itemize}<Enter><Enter><++><Esc>3kA\item<Space>
+autocmd FileType tex inoremap <Leader>li <Enter>\item<Space>
+autocmd FileType tex inoremap <Leader>ref \ref{}<Space><++><Esc>T{i
+autocmd FileType tex inoremap <Leader>tab \begin{tabular}<Enter><++><Enter>\end{tabular}<Enter><Enter><++><Esc>4kA{}<Esc>i
+autocmd FileType tex inoremap <Leader>ot \begin{tableau}<Enter>\inp{<++>}<Tab>\const{<++>}<Tab><++><Enter><++><Enter>\end{tableau}<Enter><Enter><++><Esc>5kA{}<Esc>i
+autocmd FileType tex inoremap <Leader>can \cand{}<Tab><++><Esc>T{i
+autocmd FileType tex inoremap <Leader>con \const{}<Tab><++><Esc>T{i
+autocmd FileType tex inoremap <Leader>v \vio{}<Tab><++><Esc>T{i
+autocmd FileType tex inoremap <Leader>a \href{}{<++>}<Space><++><Esc>2T{i
