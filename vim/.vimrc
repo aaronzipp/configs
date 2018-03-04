@@ -16,14 +16,7 @@ Plugin 'tpope/vim-fugitive'
 call vundle#end()
 "================================================================
 "================================================================
-"Java compiler
-autocmd filetype java command! Run execute 'w | !runj ' . @%
-"C++ Compiler
-autocmd filetype cpp command! Run execute 'w | !runcpp ' . @%
-autocmd filetype cpp map <F5> :Run<CR>
-"Autocompile TeX
-""autocmd Filetype tex
-autocmd filetype tex autocmd InsertLeave * execute 'w | silent !pdflatex ' .@% | execute 'redraw!'
+
 
 "File Browser
 let g:netrw_banner=0
@@ -34,6 +27,7 @@ let g:netrw_liststyle=3
 filetype plugin indent on
 set encoding=utf-8
 
+set relativenumber
 set tabstop=4
 set softtabstop=0 noexpandtab
 set shiftwidth=4
@@ -45,11 +39,6 @@ syntax on
 set wildmenu
 set path+=**
 set number
-
-autocmd FocusLost * set number 
-autocmd FocusGained * set relativenumber 
-autocmd InsertEnter * set number
-autocmd InsertLeave * set relativenumber
 
 "mappings
 
@@ -85,15 +74,13 @@ inoremap ( ()<ESC>i
 inoremap [ []<ESC>i
 inoremap { {}<ESC>i
 inoremap " ""<ESC>i
-nnoremap <Space><Space> /<++><CR>"_c4l
+"nnoremap <Space><Space> /<++><CR>"_c4l
 
 autocmd FileType html nnoremap ,html i<html><CR><TAB><head><CR><TAB><TAB><title><++></title><CR><TAB></head><CR><TAB><body><CR><TAB><TAB><++><CR><TAB></body><CR></html><ESC>gg
 autocmd FileType html inoremap ,p <p><p><CR><CR><++><ESC>2ki
 autocmd FileType cpp nnoremap <Leader>main i#include<iostream><CR><CR>int main(){<CR><CR>return 0;<CR>}<ESC>2ki<TAB>
 
 "LaTeX"
-"autocmd filetype tex command! comp execute 'w | !pdflatex ' . @%
-"autocmd filetype tex inoremap <F5> <ESC>:comp<CR>  
 
 autocmd FileType tex inoremap <Leader>fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
 autocmd FileType tex inoremap <Leader>mat \begin{matrix}<Enter><Enter><Enter><++><Enter><Enter>\end{matrix}<Enter><Enter><++><Esc>6kf}i
