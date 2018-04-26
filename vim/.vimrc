@@ -1,124 +1,151 @@
+" vim: fdm=marker foldenable sw=4 ts=4 sts=4
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-
-set nobackup
-set nowritebackup
-set noswapfile
-
-"Plugins=========================================================
-call vundle#begin()
-Plugin 'gmarik/Vundle.vim'
-
-Plugin 'tpope/vim-fugitive'
-
-
-call vundle#end()
-"================================================================
-"================================================================
-
-
-"File Browser
-let g:netrw_banner=0
-let g:netrw_browse_split=4
-let g:netrw_altv=1
-let g:netrw_liststyle=3
-
-filetype plugin indent on
 set encoding=utf-8
 
-set relativenumber
-set tabstop=4
-set softtabstop=0 noexpandtab
-set shiftwidth=4
+" Plugins {{{
+call plug#begin('C:\Program Files (x86)\Vim\vim80\plugged')
 
-set list
-set listchars=tab:>\ 
+Plug 'junegunn/vim-plug'
 
-syntax on
-set wildmenu
-set path+=**
+"  NerdTree {{{
+Plug 'scrooloose/nerdtree'
+
+let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.o$', '\.so$', '\.a$', '\.swp', '*\.swp', '\.swo', '\.swn', '\.swh', '\.swm', '\.swl', '\.swk', '\.sw*$', '[a-zA-Z]*egg[a-zA-Z]*', '.DS_Store', '\.DAT*', '.gitconfig', '\.exe', '_viminfo', 'ntuser.ini']
+
+let NERDTreeShowHidden=1
+let g:NERDTreeWinPos="left"
+let g:NERDTreeDirArrows=0
+map <C-t> :NERDTreeToggle<CR>
+" }}}
+
+" tpope {{{
+Plug 'tpope/vim-surround'
+
+Plug 'tpope/vim-commentary'
+
+Plug 'tpope/vim-repeat'
+
+Plug 'tpope/vim-markdown'
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+" }}}
+
+" vim-sort-motion {{{
+Plug 'christoomey/vim-sort-motion'
+
+let g:sort_motion_flags="ui"
+" }}}
+
+Plug 'vim-scripts/Conque-Shell'
+
+Plug 'lilydjwg/colorizer'
+
+Plug 'junegunn/goyo.vim'
+
+Plug 'tomasiser/vim-code-dark'
+
+Plug 'dracula/vim', { 'as': 'dracula' }
+
+call plug#end()
+
+filetype plugin indent on
+
+" }}}
+
+" Colors and other basic settings {{{
+set guifont=Consolas:h11:b:cANSI:qDRAFT
+set fillchars+=vert:\$
+colorscheme codedark
+set background=dark
+
+set ruler laststatus=2
+set hidden
+
+set splitbelow
+set splitright
+
 set number
+set relativenumber
 
-"mappings
+set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab autoindent
+:set guioptions-=m  "remove menu bar
+:set guioptions-=T  "remove toolbar
+:set guioptions-=r  "remove right-hand scroll bar
+:set guioptions-=L  "remove left-hand scroll bar
+:set lines=999 columns=999
+" }}}
 
-command! MakeTags !ctags -R .
-let mapleader = ","
+" Backup and swap {{{
+set noswapfile
+set undofile
+set undodir=$HOME/vim/undo
+set backupdir=$HOME/vim/backup
+" }}}
 
-"Saving files
-nnoremap <C-Y> :w<CR>
-inoremap <C-Y> <ESC>:w<CR>li
-vnoremap <C-Y> <ESC>:w<CR>v
+" vimrc file {{{
+function Vimrc()
+   find $VIMRUNTIME\..\_vimrc
+endfunction
+" }}}
 
+set path+=**
+set wildmenu
 
-"Tabs
-nnoremap <Leader>q :tabnew<CR>
-inoremap <Leader>q <ESC>:tabnew<CR>
-vnoremap <Leader>q <ESC>:tabnew<CR>
+set updatetime=500
+autocmd CursorHold * if @% != "" | update | endif
+autocmd BufLeave * if &modifiable | %s/\s\+$//e | endif
 
-nnoremap <Leader>n :tabprevious<CR>
-inoremap <Leader>n <ESC>:tabprevious<CR>
-vnoremap <Leader>n <ESC>:tabprevious<CR>
+set foldmethod=marker
 
-nnoremap <Leader>m :tabnext<CR>
-inoremap <Leader>m <ESC>:tabnext<CR>
-vnoremap <Leader>m <ESC>:tabnext<CR>
+syntax enable
+set spelllang=en,de
+autocmd Filetype txt set spell
 
-"Moving with windows
-map <C-H> <C-W>h
-map <C-J> <C-W>j
-map <C-K> <C-W>k
-map <C-L> <C-W>l
+" mappings {{{
+let mapleader=","
 
-inoremap ( ()<ESC>i
-inoremap [ []<ESC>i
-inoremap { {}<ESC>i
-inoremap " ""<ESC>i
-"nnoremap <Space><Space> /<++><CR>"_c4l
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
-autocmd FileType html nnoremap ,html i<html><CR><TAB><head><CR><TAB><TAB><title><++></title><CR><TAB></head><CR><TAB><body><CR><TAB><TAB><++><CR><TAB></body><CR></html><ESC>gg
-autocmd FileType html inoremap ,p <p><p><CR><CR><++><ESC>2ki
-autocmd FileType cpp nnoremap <Leader>main i#include<iostream><CR><CR>int main(){<CR><CR>return 0;<CR>}<ESC>2ki<TAB>
+nnoremap <F11> :Goyo<CR>
 
-"LaTeX"
+nnoremap <Space><Space> /<++><CR>"_c4l
+" }}}
 
-autocmd FileType tex inoremap <Leader>fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
-autocmd FileType tex inoremap <Leader>mat \begin{matrix}<Enter><Enter><Enter><++><Enter><Enter>\end{matrix}<Enter><Enter><++><Esc>6kf}i
-autocmd FileType tex inoremap <Leader>fi \begin{fitch}<Enter><Enter>\end{fitch}<Enter><Enter><++><Esc>3kA
-autocmd FileType tex inoremap <Leader>exe \begin{exe}<Enter>\ex<Space><Enter>\end{exe}<Enter><Enter><++><Esc>3kA
-autocmd FileType tex inoremap <Leader>em \emph{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>bf \textbf{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>it \textit{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>ct \textcite{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>cp \parencite{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>glos {\gll<Space><++><Space>\\<Enter><++><Space>\\<Enter>\trans{``<++>''}}<Esc>2k2bcw
-autocmd FileType tex inoremap <Leader>x \begin{xlist}<Enter>\ex<Space><Enter>\end{xlist}<Esc>kA<Space>
-autocmd FileType tex inoremap <Leader>ol \begin{enumerate}<Enter><Enter>\end{enumerate}<Enter><Enter><++><Esc>3kA\item<Space>
-autocmd FileType tex inoremap <Leader>ul \begin{itemize}<Enter><Enter>\end{itemize}<Enter><Enter><++><Esc>3kA\item<Space>
-autocmd FileType tex inoremap <Leader>li <Enter>\item<Space>
-autocmd FileType tex inoremap <Leader>ref \ref{}<Space><++><Esc>T{i
-autocmd FileType tex inoremap <Leader>tab \begin{tabular}<Enter><++><Enter>\end{tabular}<Enter><Enter><++><Esc>4kA{}<Esc>i
-autocmd FileType tex inoremap <Leader>ot \begin{tableau}<Enter>\inp{<++>}<Tab>\const{<++>}<Tab><++><Enter><++><Enter>\end{tableau}<Enter><Enter><++><Esc>5kA{}<Esc>i
-autocmd FileType tex inoremap <Leader>can \cand{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap <Leader>con \const{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap <Leader>v \vio{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap <Leader>a \href{}{<++>}<Space><++><Esc>2T{iautocmd FileType tex inoremap ;fr \begin{frame}<Enter>\frametitle{}<Enter><Enter><++><Enter><Enter>\end{frame}<Enter><Enter><++><Esc>6kf}i
-autocmd FileType tex inoremap <Leader>fi \begin{fitch}<Enter><Enter>\end{fitch}<Enter><Enter><++><Esc>3kA
-autocmd FileType tex inoremap <Leader>exe \begin{exe}<Enter>\ex<Space><Enter>\end{exe}<Enter><Enter><++><Esc>3kA
-autocmd FileType tex inoremap <Leader>em \emph{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>bf \textbf{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>it \textit{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>ct \textcite{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>cp \parencite{}<++><Esc>T{i
-autocmd FileType tex inoremap <Leader>glos {\gll<Space><++><Space>\\<Enter><++><Space>\\<Enter>\trans{``<++>''}}<Esc>2k2bcw
-autocmd FileType tex inoremap <Leader>x \begin{xlist}<Enter>\ex<Space><Enter>\end{xlist}<Esc>kA<Space>
-autocmd FileType tex inoremap <Leader>ol \begin{enumerate}<Enter><Enter>\end{enumerate}<Enter><Enter><++><Esc>3kA\item<Space>
-autocmd FileType tex inoremap <Leader>ul \begin{itemize}<Enter><Enter>\end{itemize}<Enter><Enter><++><Esc>3kA\item<Space>
-autocmd FileType tex inoremap <Leader>li <Enter>\item<Space>
-autocmd FileType tex inoremap <Leader>ref \ref{}<Space><++><Esc>T{i
-autocmd FileType tex inoremap <Leader>tab \begin{tabular}<Enter><++><Enter>\end{tabular}<Enter><Enter><++><Esc>4kA{}<Esc>i
-autocmd FileType tex inoremap <Leader>ot \begin{tableau}<Enter>\inp{<++>}<Tab>\const{<++>}<Tab><++><Enter><++><Enter>\end{tableau}<Enter><Enter><++><Esc>5kA{}<Esc>i
-autocmd FileType tex inoremap <Leader>can \cand{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap <Leader>con \const{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap <Leader>v \vio{}<Tab><++><Esc>T{i
-autocmd FileType tex inoremap <Leader>a \href{}{<++>}<Space><++><Esc>2T{i
+" diffexpr (default by Windows) {{{
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      if empty(&shellxquote)
+        let l:shxq_sav = ''
+        set shellxquote&
+      endif
+      let cmd = '"' . $VIMRUNTIME . '\diff"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
+  if exists('l:shxq_sav')
+    let &shellxquote=l:shxq_sav
+  endif
+endfunction
+" }}}
