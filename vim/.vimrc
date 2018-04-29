@@ -8,6 +8,7 @@ filetype off
 set encoding=utf-8
 
 " Plugins {{{
+command! PU PlugUpdate | PlugUpgrade
 call plug#begin('C:\Program Files (x86)\Vim\vim80\plugged')
 
 Plug 'junegunn/vim-plug'
@@ -30,8 +31,7 @@ Plug 'tpope/vim-commentary'
 
 Plug 'tpope/vim-repeat'
 
-Plug 'tpope/vim-markdown'
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
+Plug 'tpope/vim-vividchalk'
 " }}}
 
 " vim-sort-motion {{{
@@ -40,11 +40,13 @@ Plug 'christoomey/vim-sort-motion'
 let g:sort_motion_flags="ui"
 " }}}
 
-Plug 'vim-scripts/Conque-Shell'
+Plug 'nvie/vim-flake8'
 
 Plug 'lilydjwg/colorizer'
 
 Plug 'junegunn/goyo.vim'
+let g:goyo_width=130
+let g:goyo_height=55
 
 Plug 'tomasiser/vim-code-dark'
 
@@ -59,7 +61,7 @@ filetype plugin indent on
 " Colors and other basic settings {{{
 set guifont=Consolas:h11:b:cANSI:qDRAFT
 set fillchars+=vert:\$
-colorscheme codedark
+colorscheme vividchalk
 set background=dark
 
 set ruler laststatus=2
@@ -103,7 +105,7 @@ set foldmethod=marker
 
 syntax enable
 set spelllang=en,de
-autocmd Filetype txt set spell
+autocmd Filetype txt,tex set spell
 
 " mappings {{{
 let mapleader=","
@@ -113,9 +115,15 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
+map <C-Y> :sh<CR><CR>
+
 nnoremap <F11> :Goyo<CR>
 
 nnoremap <Space><Space> /<++><CR>"_c4l
+
+" CSS
+autocmd FileType css inoremap { {<CR><CR><BS>}<ESC>ki<TAB>
+
 " }}}
 
 " diffexpr (default by Windows) {{{
