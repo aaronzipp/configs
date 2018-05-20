@@ -1,13 +1,17 @@
-" vim: fdm=marker foldenable sw=4 ts=4 sts=4
-source $VIMRUNTIME/vimrc_example.vim
-source $VIMRUNTIME/mswin.vim
-behave mswin
+" vimrc file {{{
+function Vimrc()
+   find $VIMRUNTIME\..\_vimrc
+endfunction
+" }}}
+
+" source $VIMRUNTIME/vimrc_example.vim
+" source $VIMRUNTIME/mswin.vim
+" behave mswin
 
 set nocompatible
-filetype off
-set encoding=utf-8
 
 " Plugins {{{
+filetype off
 command! PU PlugUpdate | PlugUpgrade
 call plug#begin('C:\Program Files (x86)\Vim\vim80\plugged')
 
@@ -21,7 +25,7 @@ let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.o$', '\.so$', '\.a$', '\.swp',
 let NERDTreeShowHidden=1
 let g:NERDTreeWinPos="left"
 let g:NERDTreeDirArrows=0
-map <C-t> :NERDTreeToggle<CR>
+map <C-T> :NERDTreeToggle<CR>
 " }}}
 
 " tpope {{{
@@ -40,32 +44,33 @@ Plug 'christoomey/vim-sort-motion'
 let g:sort_motion_flags="ui"
 " }}}
 
-Plug 'nvie/vim-flake8'
-
-Plug 'lilydjwg/colorizer'
-
-Plug 'junegunn/goyo.vim'
-let g:goyo_width=130
-let g:goyo_height=55
-
-Plug 'tomasiser/vim-code-dark'
-
-Plug 'dracula/vim', { 'as': 'dracula' }
-
 call plug#end()
 
 filetype plugin indent on
 
 " }}}
 
-" Colors and other basic settings {{{
+" Basic settings {{{
+set encoding=utf-8
+
+set path+=**
+set wildmenu
+set wildignore+=*/AppData/*,*/.ipython/*,*/3D\ Objects/*,*/Backup/*,*/Contacts/*,*/Cookies/*,*/Druckumgebung/*,*/Favorites/*,*/IntelGraphicsProfiles/*
+set wildignore+=*/Links/*,*/Lokale\ Einstellungen/*,*/MicrosoftEdgeBackups/*,*/Music/*,*/Netzwerkumgebung/*,*/OneDrive/*,*/Pictures/*
+set wildignore+=*/Recent/*,*/Saved\ Games/*,*/Searches/*,/*SendTo/*,*/Startmenü/*,*/Videos/*,*/Vorlagen/*
+
 set guifont=Consolas:h11:b:cANSI:qDRAFT
 set fillchars+=vert:\$
 colorscheme vividchalk
-set background=dark
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=L  "remove left-hand scroll bar
+set lines=999 columns=999
 
 set ruler laststatus=2
 set hidden
+set foldmethod=marker
 
 set splitbelow
 set splitright
@@ -73,13 +78,16 @@ set splitright
 set number
 set relativenumber
 
-set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab autoindent
-:set guioptions-=m  "remove menu bar
-:set guioptions-=T  "remove toolbar
-:set guioptions-=r  "remove right-hand scroll bar
-:set guioptions-=L  "remove left-hand scroll bar
-:set lines=999 columns=999
+set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+
+set backspace=indent,eol,start whichwrap+=<,>,[,]
 " }}}
+
+" Syntax {{{
+syntax enable
+set spelllang=en,de
+autocmd Filetype txt,tex set spell
+"}}}
 
 " Backup and swap {{{
 set noswapfile
@@ -88,24 +96,11 @@ set undodir=$HOME/vim/undo
 set backupdir=$HOME/vim/backup
 " }}}
 
-" vimrc file {{{
-function Vimrc()
-   find $VIMRUNTIME\..\_vimrc
-endfunction
-" }}}
-
-set path+=**
-set wildmenu
-
+" Autocommands {{{
 set updatetime=500
 autocmd CursorHold * if @% != "" | update | endif
 autocmd BufLeave * if &modifiable | %s/\s\+$//e | endif
-
-set foldmethod=marker
-
-syntax enable
-set spelllang=en,de
-autocmd Filetype txt,tex set spell
+" }}}
 
 " mappings {{{
 let mapleader=","
@@ -115,45 +110,55 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-map <C-Y> :sh<CR><CR>
-
-nnoremap <F11> :Goyo<CR>
-
 nnoremap <Space><Space> /<++><CR>"_c4l
+
+" backspace in visual mode
+vnoremap <BS> d
+
+" CTRL-backspace in insert 
+inoremap <C-BS> <Space><C-O>db<BS>
+
+" CTRL-X in visual
+vnoremap <C-X> "+x
+
+" CTRL-C in visual
+vnoremap <C-C> "+y
+
+" CTRL-V for pasting
+vnoremap <C-V> "+gP
+inoremap <C-V> <Space><ESC>"+gPa<BS>
+cmap <C-V> <C-R>+
+
+" CTRL-Q for visual block mode
+noremap <C-Q> <C-V>
+
+" CTRL-U for character codes
+inoremap <C-U> <C-V>
+
+" CTRL-S for saving
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <C-O>:update<CR>
+
+" S-Arrows for selection
+nmap <S-K> gh<Up>
+nmap <S-J> gh<Down>
+smap <S-K> <Up>
+smap <S-J> <Down>
+
+" ~ for help like <S-T> did
+nnoremap ~ <S-K>
+
+" CTRL-Tab is Next window
+nnoremap <C-Tab> <C-W>w
+inoremap <C-Tab> <C-O><C-W>w
+cnoremap <C-Tab> <C-C><C-W>w
+onoremap <C-Tab> <C-C><C-W>w
 
 " CSS
 autocmd FileType css inoremap { {<CR><CR><BS>}<ESC>ki<TAB>
 
-" }}}
+" Python
+autocmd Filetype python map <Leader>p <ESC>Iprint(<ESC>A)<ESC>
 
-" diffexpr (default by Windows) {{{
-set diffexpr=MyDiff()
-function MyDiff()
-  let opt = '-a --binary '
-  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
-  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
-  let arg1 = v:fname_in
-  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
-  let arg2 = v:fname_new
-  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
-  let arg3 = v:fname_out
-  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
-  if $VIMRUNTIME =~ ' '
-    if &sh =~ '\<cmd'
-      if empty(&shellxquote)
-        let l:shxq_sav = ''
-        set shellxquote&
-      endif
-      let cmd = '"' . $VIMRUNTIME . '\diff"'
-    else
-      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
-    endif
-  else
-    let cmd = $VIMRUNTIME . '\diff'
-  endif
-  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3
-  if exists('l:shxq_sav')
-    let &shellxquote=l:shxq_sav
-  endif
-endfunction
 " }}}
