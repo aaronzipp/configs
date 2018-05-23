@@ -9,14 +9,14 @@ set nocompatible
 " Plugins {{{
 filetype off
 command! PU PlugUpdate | PlugUpgrade
-call plug#begin('C:\Program Files (x86)\Vim\vim80\plugged')
+call plug#begin('~/.vim/plugged')
 
 Plug 'junegunn/vim-plug'
 
 "  NerdTree {{{
 Plug 'scrooloose/nerdtree'
 
-let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.o$', '\.so$', '\.a$', '\.swp', '*\.swp', '\.swo', '\.swn', '\.swh', '\.swm', '\.swl', '\.swk', '\.sw*$', '[a-zA-Z]*egg[a-zA-Z]*', '.DS_Store', '\.DAT*', '.gitconfig', '\.exe', '_viminfo', 'ntuser.ini']
+let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.o$', '\.so$', '\.a$', '\.swp', '*\.swp', '\.swo', '\.swn', '\.swh', '\.swm', '\.swl', '\.swk', '\.sw*$', '[a-zA-Z]*egg[a-zA-Z]*', '.DS_Store', '.gitconfig']
 
 let NERDTreeShowHidden=1
 let g:NERDTreeWinPos="left"
@@ -83,8 +83,8 @@ autocmd Filetype txt,tex set spell
 " Backup and swap {{{
 set noswapfile
 set undofile
-set undodir=$HOME/vim/undo
-set backupdir=$HOME/vim/backup
+set undodir=$HOME/.vim/undo
+set backupdir=$HOME/.vim/backup
 " }}}
 
 " Autocommands {{{
