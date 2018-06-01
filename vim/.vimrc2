@@ -1,0 +1,155 @@
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+set nocompatible
+
+" Plugins {{{
+filetype off
+command! PU PlugUpdate | PlugUpgrade
+call plug#begin('~/.vim/plugged')
+
+Plug 'junegunn/vim-plug'
+
+"  NerdTree {{{
+Plug 'scrooloose/nerdtree'
+
+let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.o$', '\.so$', '\.a$', '\.swp', '*\.swp', '\.swo', '\.swn', '\.swh', '\.swm', '\.swl', '\.swk', '\.sw*$', '[a-zA-Z]*egg[a-zA-Z]*', '.DS_Store', '.gitconfig']
+
+let NERDTreeShowHidden=1
+let g:NERDTreeWinPos="left"
+let g:NERDTreeDirArrows=0
+map <C-T> :NERDTreeToggle<CR>
+" }}}
+
+" tpope {{{
+Plug 'tpope/vim-surround'
+
+Plug 'tpope/vim-commentary'
+
+Plug 'tpope/vim-repeat'
+
+Plug 'tpope/vim-vividchalk'
+" }}}
+
+" vim-sort-motion {{{
+Plug 'christoomey/vim-sort-motion'
+
+let g:sort_motion_flags="ui"
+" }}}
+
+call plug#end()
+
+filetype plugin indent on
+
+" }}}
+
+" Basic settings {{{
+set encoding=utf-8
+
+set path+=**
+set wildmenu
+
+set guifont=Consolas:h11:b:cANSI:qDRAFT
+set fillchars+=vert:\$
+set t_Co=256
+colorscheme vividchalk
+set guioptions=
+set lines=999 columns=999
+
+set ruler laststatus=2
+set hidden
+set foldmethod=marker
+
+set splitbelow
+set splitright
+
+set number
+set relativenumber
+
+set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+
+set backspace=indent,eol,start whichwrap+=<,>,[,]
+" }}}
+
+" Syntax {{{
+syntax enable
+set spelllang=en,de
+autocmd Filetype txt,tex set spell
+"}}}
+
+" Backup and swap {{{
+set noswapfile
+set undofile
+set undodir=$HOME/.vim/undo
+set backupdir=$HOME/.vim/backup
+" }}}
+
+" Autocommands {{{
+set updatetime=500
+autocmd CursorHold * if @% != "" | update | endif
+autocmd BufLeave * if &modifiable | %s/\s\+$//e | endif
+" }}}
+
+" mappings {{{
+let mapleader=","
+
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+nnoremap <Space><Space> /<++><CR>"_c4l
+
+" backspace in visual mode
+vnoremap <BS> d
+
+" CTRL-backspace in insert 
+inoremap <C-BS> <Space><C-O>db<BS>
+
+" CTRL-X in visual
+vnoremap <C-X> "+x
+
+" CTRL-C in visual
+vnoremap <C-C> "+y
+
+" CTRL-V for pasting
+vnoremap <C-V> "+gP
+inoremap <C-V> <Space><ESC>"+gPa<BS>
+cmap <C-V> <C-R>+
+
+" CTRL-Q for visual block mode
+noremap <C-Q> <C-V>
+
+" CTRL-U for character codes
+inoremap <C-U> <C-V>
+
+" CTRL-S for saving
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <C-O>:update<CR>
+
+" S-Arrows for selection
+nmap <S-K> gh<Up>
+nmap <S-J> gh<Down>
+smap <S-K> <Up>
+smap <S-J> <Down>
+
+" ~ for help like <S-T> did
+nnoremap ~ <S-K>
+
+" CTRL-Tab is Next window
+nnoremap <C-Tab> <C-W>w
+inoremap <C-Tab> <C-O><C-W>w
+cnoremap <C-Tab> <C-C><C-W>w
+onoremap <C-Tab> <C-C><C-W>w
+
+" CSS
+autocmd FileType css inoremap { {<CR><CR><BS>}<ESC>ki<TAB>
+
+" Python
+autocmd Filetype python map <Leader>p <ESC>Iprint(<ESC>A)<ESC>
+
+" }}}
