@@ -1,20 +1,19 @@
 {
-    "workbench.startupEditor": "none",
-    "workbench.iconTheme": "vs-seti",
-    "emmet.syntaxProfiles": {},
-    "terminal.integrated.cursorStyle": "underline",
-    "terminal.integrated.shell.windows": "C:\\WINDOWS\\System32\\cmd.exe",
-    "git.ignoreLegacyWarning": true,
-    "workbench.colorTheme": "Material Neutral - Classic",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
     "files.autoSave": "onFocusChange",
     "files.exclude": {
         "**/.git": true,
-        "**/.vscode": true,
-        "**/__pycache__":true
+        "**/__pycache__": true
     },
-    "window.zoomLevel": 0,
-    "python.formatting.provider": "none",
-    "python.linting.enabled": false,
-    "python.linting.enabledWithoutWorkspace": false,
-    "python.linting.pylintEnabled": false
-}
+    "git.ignoreLegacyWarning": true,
+    "r.alwaysUseActiveTerminal": true,
+    "r.bracketedPaste": true,
+    "r.plot.useHttpgd": true,
+    "r.rpath.windows": "C:\\Program Files\\R\\R-4.2.1\\bin\\R.exe",
+    "r.rterm.windows": "C:\\Users\\aaron\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\radian.exe",
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "window.zoomLevel": 1,
+    "workbench.startupEditor": "none",
+} 
