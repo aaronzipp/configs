@@ -1,40 +1,36 @@
-" vimrc file {{{
+au!
+" vimrc file {{{ function Vimrc()
+command! Vimrc call Vimrc()
 function Vimrc()
    find $VIMRUNTIME\..\_vimrc
 endfunction
 " }}}
-
-" source $VIMRUNTIME/vimrc_example.vim
-" source $VIMRUNTIME/mswin.vim
-" behave mswin *
 
 set nocompatible
 
 " Plugins {{{
 filetype off
 command! PU PlugUpdate | PlugUpgrade
-call plug#begin('C:\Program Files (x86)\Vim\vim82\plugged')
+call plug#begin('C:\Program Files (x86)\Vim\plugged')
 
 Plug 'junegunn/vim-plug'
 
 " UltiSnips {{{
 if has('python3')
     Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
 
     let g:UltiSnipsExpandTrigger="<tab>"
     let g:UltiSnipsJumpForwardTrigger="<tab>"
     let g:UltisnipsJumpBackwardTrigger="<s-tab>"
     let g:UltisnipsEditSplit="vertical"
-    let g:UltisnipsSnippetDir= "C:/Users/aaron/Ultisnips"
+    let g:UltisnipsSnippetDir="C:/Users/aaron/Ultisnips"
 endif
-" let g:UltisnipsSnippetDirectories=["C:/Users/aaron/Ultisnips"]
 " }}}
 
 "  NerdTree {{{
 Plug 'scrooloose/nerdtree'
 
-let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.o$', '\.so$', '\.a$', '\.swp', '*\.swp', '\.swo', '\.swn', '\.swh', '\.swm', '\.swl', '\.swk', '\.sw*$', '[a-zA-Z]*egg[a-zA-Z]*', '.DS_Store', '\.DAT*', '.gitconfig', '\.exe', '_viminfo', 'ntuser.ini']
+let NERDTreeIgnore = ['__pycache__', '\.pyc$', '\.o$', '\.so$', '\.a$', '\.swp', '*\.swp', '\.swo', '\.swn', '\.swh', '\.swm', '\.swl', '\.swk', '\.sw*$', '[a-zA-Z]*egg[a-zA-Z]*', '.DS_Store', '\.DAT*', '.gitconfig', '\.exe', '_viminfo', 'ntuser.ini', '\.aux']
 
 let NERDTreeShowHidden=1
 let g:NERDTreeWinPos="left"
@@ -47,9 +43,12 @@ Plug 'tpope/vim-surround'
 
 Plug 'tpope/vim-commentary'
 
+Plug 'tpope/vim-speeddating'
+
 Plug 'tpope/vim-repeat'
 
-Plug 'tpope/vim-vividchalk'
+Plug 'tpope/vim-fugitive'
+
 " }}}
 
 " vim-sort-motion {{{
@@ -75,14 +74,12 @@ let g:gruvbox_invert_selection='0'
 
 " Mini-Plugins {{{
 Plug 'vim-scripts/IndexedSearch'
-" Plug 'Townk/vim-autoclose'
-" let g:AutoClosePairs = "() [] {} \"\" ''"
 Plug 'Raimondi/delimitMate'
 Plug 'vim-syntastic/syntastic'
+Plug 'aaronzipp/toggle-bool'
 
-" " set statusline-=%#warningmsg#
-" " set statusline-=%{SyntasticStatuslineFlag()}
-" " set statusline-=%*
+Plug 'anufrievroman/vim-angry-reviewer'
+let g:AngryReviewerEnglish = 'american'
 
 let g:syntastic_always_populate_loc_list = 0
 let g:syntastic_auto_loc_list = 0
@@ -90,24 +87,23 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
 Plug 'vim-python/python-syntax'
-
 Plug 'vim-scripts/indentpython.vim'
+
 " }}}
 
 call plug#end()
 
 filetype plugin indent on
 
-" Disable Autoclosing for Tex-Files
-" autocmd BufNewFile,BufRead *.tex AutoCloseOff
-
 " }}}
 
 " Basic settings {{{
-set encoding=utf-8
+set encoding=UTF-8
 
 set path+=**
+set wildmode=longest:full
 set wildmenu
+
 " Windows
 set wildignore+=*/AppData/*,*/.ipython/*,*/3D\ Objects/*,*/Backup/*,*/Contacts/*,*/Cookies/*,*/Druckumgebung/*,*/Favorites/*,*/IntelGraphicsProfiles/*
 set wildignore+=*/Links/*,*/Lokale\ Einstellungen/*,*/MicrosoftEdgeBackups/*,*/Music/*,*/Netzwerkumgebung/*,*/OneDrive/*,*/Pictures/*
@@ -115,18 +111,22 @@ set wildignore+=*/Recent/*,*/Saved\ Games/*,*/Searches/*,/*SendTo/*,*/Startmenü
 
 set guifont=Consolas:h11:b:cANSI:qDRAFT
 set fillchars+=vert:\$
-" colorscheme vividchalk
+
 colorscheme gruvbox
 set background=dark
+
 " Windows?
 set guioptions-=m  "remove menu bar
 set guioptions-=T  "remove toolbar
 set guioptions-=r  "remove right-hand scroll bar
 set guioptions-=L  "remove left-hand scroll bar
+
 set lines=999 columns=999
+set scrolloff=10
 
 set hlsearch
-nnoremap <C-l> :noh<CR>
+noh
+nnoremap <silent> <C-l> :noh<CR>
 
 set ruler laststatus=2
 set hidden
@@ -139,18 +139,26 @@ set number
 set relativenumber
 
 set expandtab
-au BufRead,BufNewFile *.py set expandtab
-au BufRead,BufNewFile *.c set noexpandtab
-au BufRead,BufNewFile *.h set noexpandtab
-au BufRead,BufNewFile Makefile* set noexpandtab
 set tabstop=4 softtabstop=4 shiftwidth=4
+au BufRead,BufNewFile *.py set expandtab
+au BufRead,BufNewFile *.c,*.h,Makefile* set noexpandtab
+au BufRead,BufNewFile *.md,*yaml,*yml setlocal ts=2 sts=2 sw=2 expandtab autoindent
+
+au FileType python setl foldmethod=indent foldenable
 
 set backspace=indent,eol,start whichwrap+=<,>,[,]
 
 set nrformats-=octal
 
-" set completeopt-=noinsert
-" set completeopt-=preview
+" }}}
+
+" Autocommands {{{
+set updatetime=500
+" Auto-save
+autocmd CursorHold * if @% != "" && &modifiable| update | endif
+" Strip trailing white space when closing file
+autocmd BufLeave * if &modifiable | %s/\s\+$//e | endif
+
 " }}}
 
 " Syntax {{{
@@ -166,30 +174,45 @@ set undodir=$HOME/vim/undo
 set backupdir=$HOME/vim/backup
 " }}}
 
-" Autocommands {{{
-set updatetime=500
-autocmd CursorHold * if @% != "" && &modifiable| update | endif
-autocmd BufLeave * if &modifiable | %s/\s\+$//e | endif
-
-
-" }}}
-
 " mappings {{{
-let mapleader=","
 
-" map <C-h> <C-w>h
-" map <C-j> <C-w>j
-" map <C-k> <C-w>k
-" map <C-l> <C-w>l
 
-nnoremap <Space><Space> /<++><CR>"_c4l
-nnoremap <C-Space><C-Space> ?<++><CR>"_c4l
+map <Space> <Leader>
 
-" backspace in visual mode
-vnoremap <BS> d
+" make yanking more comfortable
+nnoremap Y y$
 
-" CTRL-backspace in insert
-inoremap <C-BS> <C-W>
+" keep it centered
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap J mzJ`z
+
+" create undo breakpoints
+inoremap , ,<C-g>u
+inoremap . .<C-g>u
+inoremap ! !<C-g>u
+inoremap ? ?<C-g>u
+
+" jumplist mutation
+nnoremap <expr> k (v:count > 5 ? "m'" . v:count : "") . 'k'
+nnoremap <expr> j (v:count > 5 ? "m'" . v:count : "") . 'j'
+
+" moving lines
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+inoremap <C-k> <ESC>my:m .-2<CR>==`ya
+inoremap <C-j> <ESC>my:m .+1<CR>==`ya
+nnoremap <Leader>j :m .+1<CR>==
+nnoremap <Leader>k :m .-2<CR>==
+
+" navigation in command mode
+cnoremap <C-h> <Left>
+cnoremap <C-l> <Right>
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+
+nnoremap <silent> <Space><Space> /<++><CR>:noh<CR>"_c4l
+nnoremap <silent> <C-Space><C-Space> ?<++><CR>:noh<CR>"_c4l
 
 " CTRL-X in visual
 vnoremap <C-X> "+x
@@ -199,8 +222,7 @@ vnoremap <C-C> "+y
 
 " CTRL-V for pasting
 vnoremap <C-V> "+gP
-" inoremap <C-V> <Space><ESC>"+gPa<BS>
-inoremap <C-V> <Space><C-o>"+gP
+inoremap <C-V> <C-O>:Paste<CR>
 cmap <C-V> <C-R>+
 
 " CTRL-Q for visual block mode
@@ -209,23 +231,6 @@ noremap <C-Q> <C-V>
 " CTRL-U for character codes
 inoremap <C-U> <C-V>
 
-" CTRL-S for saving
-" noremap <C-S> :update<CR>
-" vnoremap <C-S> <C-C>:update<CR>
-" inoremap <C-S> <C-O>:update<CR>
-
-" S-Arrows for selection
-" nmap <S-K> gh<Up>
-" nmap <S-J> gh<Down>
-" smap <S-K> <Up>
-" smap <S-J> <Down>
-
-" CTRL-F to make word uppercase
-map! <C-F> <Esc>gUiw`]a
-
-" ~ for help like <S-K> did
-" nnoremap ~ <S-K>
-
 " CTRL-Tab is Next window
 nnoremap <C-Tab> <C-W>w
 inoremap <C-Tab> <C-O><C-W>w
@@ -233,13 +238,13 @@ cnoremap <C-Tab> <C-C><C-W>w
 onoremap <C-Tab> <C-C><C-W>w
 
 " NerdTree open new file and close old buffer
-nnoremap <Leader>s s<C-T><C-H>:bd<CR>
+nnoremap <Leader>s s<C-T><C-Tab>:bd<CR>
+
+"
+nnoremap <silent> <Leader>b :ToggleBool<CR>
 
 " .vimrc
 autocmd FileType vimrc nnoremap <F5> :source $MYVIMRC<CR><CR>
-
-" CSS
-" autocmd FileType css inoremap { {<CR><CR><BS>}<ESC>ki<TAB>
 
 " Python
 autocmd Filetype python map <Leader>p <ESC>Iprint(<ESC>A)<ESC>
@@ -254,14 +259,66 @@ autocmd Filetype java nmap <F11> :!javac % & java %:r<CR><CR>
 " LaTex
 let g:tex_flavor='latex'
 autocmd FileType tex nmap <F5> :!start cmd /c "pdflatex -shell-escape %"<CR>
-autocmd FileType tex nmap <C-F5> :!start cmd /c "pdflatex -shell-escape %"<CR>
-autocmd FileType tex nmap <F6> :!start cmd /c "cd .. && pdflatex Zusammenfassung"<CR>
-autocmd FileType tex nmap <F7> :!start cmd /c "pdflatex -shell-escape ../%:p:h:t"<CR>
-autocmd FileType tex nmap <F8> :!start cmd /c "biber %:p"<CR>
+autocmd FileType tex,bib nmap <C-F5> :!start cmd /c "biber %:p"<CR>
+autocmd FileType tex nmap <F6> :!start cmd /c "pdflatex -shell-escape ../%:p:h:t --output-directory=.."<CR>
+autocmd FileType tex nmap <C-F6> :!start cmd /c "biber -shell-escape ../%:p:h:t --output-directory=.."<CR>
 
-" YAML
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+" }}}
 
-" Makefile
+" {{{ Functions
+
+command! Paste call SmartPaste()
+
+function! SmartPaste()
+    setl paste
+    normal "+p
+    setl nopaste
+endfunction
+
+" }}}
+
+" {{{ Hardmode
+
+set mouse=
+
+nnoremap <Left> <Nop>
+nnoremap <Right> <Nop>
+nnoremap <Down> <Nop>
+nnoremap <Up> <Nop>
+
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+inoremap <Down> <Nop>
+inoremap <Up> <Nop>
+
+cnoremap <Left> <Nop>
+cnoremap <Right> <Nop>
+cnoremap <Down> <Nop>
+cnoremap <Up> <Nop>
+
+vnoremap <Left> <Nop>
+vnoremap <Right> <Nop>
+vnoremap <Down> <Nop>
+vnoremap <Up> <Nop>
+
+nnoremap <C-Left> <Nop>
+nnoremap <C-Right> <Nop>
+nnoremap <C-Down> <Nop>
+nnoremap <C-Up> <Nop>
+
+inoremap <C-Left> <Nop>
+inoremap <C-Right> <Nop>
+inoremap <C-Down> <Nop>
+inoremap <C-Up> <Nop>
+
+cnoremap <C-Left> <Nop>
+cnoremap <C-Right> <Nop>
+cnoremap <C-Down> <Nop>
+cnoremap <C-Up> <Nop>
+
+vnoremap <C-Left> <Nop>
+vnoremap <C-Right> <Nop>
+vnoremap <C-Down> <Nop>
+vnoremap <C-Up> <Nop>
 
 " }}}
